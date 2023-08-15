@@ -30,6 +30,7 @@
                         data: { username: username },
                         success: function (permission_response) {
                             console.log(permission_response);
+                            console.log(data)
                             if (decodedToken.sub === username && permission_response === "Authorized") {
                                 console.log("Giriş başarılı.");
                                 window.location.href = "/index"; 
@@ -40,7 +41,7 @@
                         },
                         error: function (error) {
                             console.error('Hata:', error);
-                            alert("Bir hata oluştu, lütfen tekrar deneyin.");
+                            alert("Bir hata oluştu, lütfen tekrar deneyin2.");
                         }
                     });
                 } else {

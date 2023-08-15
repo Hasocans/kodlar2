@@ -35,13 +35,13 @@ def yetki(username):
     db = pypyodbc.connect(
         'Driver={SQL Server};'
         'Server=BFPC1246\SQLEXPRESS;'
-        'Database=Yetkiler;'#database ismi
+        'Database=Yetkiler;'  # database ismi
         'Trusted_Connection=True;'
     )
 
     cursor = db.cursor()
-    query = "SELECT * FROM Yetki WHERE username = ?"#table,sütun1,sütun2
-    cursor.execute(query, (username))
+    query = "SELECT * FROM Yetki WHERE username = ?"  # table, sütun1, sütun2
+    cursor.execute(query, (username,))
     result = cursor.fetchall()
     cursor.close()
     db.close()
