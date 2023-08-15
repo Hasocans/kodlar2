@@ -1,0 +1,43 @@
+{% extends "temel.html" %}
+
+{%block title%} {%endblock title%}
+
+{%block content%}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hata</title>
+    <script>
+        function goBack() {
+            history.back();
+        }
+    </script>
+</head>
+<body>
+    <div class="container mt-5">
+        <header class="bg-dark text-white text-center py-3">
+            <h1>Hata</h1>
+        </header>
+        
+        <div class="card p-4">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <p class="lead font-weight-bold">{{ error_message2 }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <button class="btn btn-primary" onclick="goBack()">Fotoğraf Yükleme Sayfası</button>
+        </div>
+    </div>
+
+    <script>
+        function goBack() {
+            history.back();
+        }
+    </script>
+</body>
+</html>
+{%endblock content%}

@@ -1,0 +1,39 @@
+{% extends "temel.html" %}
+
+{%block title%} {%endblock title%}
+
+{%block content%}
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manuel Düzenleme</title>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Manuel Düzenleme</h1>
+
+        <form action="/manual_edit" method="POST" class="p-4 border rounded shadow-sm">
+            <div class="form-group">
+                <label for="urun_parti_no">Ürün Parti No:</label>
+                <input type="text" id="urun_parti_no" name="urun_parti_no" value="{{ urun_parti_no }}" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="malzeme_parti_no">Malzeme Parti No:</label>
+                <input type="text" id="malzeme_parti_no" name="malzeme_parti_no" value="{{ malzeme_parti_no }}" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="Net">Net:</label>
+                <input type="text" id="Net" name="Net" value="{{ Net }}" class="form-control" required>
+            </div>
+            <input type="hidden" name="result" value="{{ new_result }}">
+            <button type="submit" class="btn btn-primary btn-block">Verileri Düzenle</button>
+        </form>
+
+        <a href="/" class="d-block text-center mt-3">Ana Sayfa</a>
+    </div>
+</body>
+</html>
+{%endblock content%}
