@@ -7,21 +7,40 @@ import string
 def check_data_in_table(urun_pati_no, malzeme_pati_no):
     db = pypyodbc.connect(
         'Driver={SQL Server};'
-        'Server=BFPC1246\SQLEXPRESS;'
-        'Database=ogrenci_bilgileri;'#database ismi
-        'Trusted_Connection=True;'
+        'Server=192.168.101.120;'  # Server IP adresi
+        'Database=BIOCORE_TEST;'  # Hedef database ismi
+        'UID=SOFTWARE_TEST;'  # Kullanıcı adı, gerekirse düzenleyin
+        'PWD=Bftst3442*;'  # Şifre, gerekirse düzenleyin
     )
 
     cursor = db.cursor()
-    query = "SELECT * FROM PartiNo WHERE UrunPatiNo = ? AND MalzemePartiNo = ?"#table,sütun1,sütun2
+    query = """
+    SELECT TOP (1000) [OrderNo]
+        ,[BatchNo]
+        ,[ProductCode]
+        ,[ProductName]
+        ,[MaterialNo]
+        ,[MaterialName]
+        ,[MaterialBatchNo]
+        ,[NetWeight]
+        ,[Unit]
+    FROM [dbo].[VW_ProductProcess]
+    WHERE BatchNo=? AND MaterialBatchNo=?
+    """
     cursor.execute(query, (urun_pati_no, malzeme_pati_no))
     deger = cursor.fetchall()
     if deger:
-        query_select = "SELECT agirlik, Birim FROM PartiNo WHERE UrunPatiNo = ? AND MalzemePartiNo = ?"
+        query_select = """
+    SELECT TOP (1) [NetWeight], [Unit]
+    FROM [dbo].[VW_ProductProcess]
+    WHERE BatchNo=? AND MaterialBatchNo=?
+    """
         cursor.execute(query_select, (urun_pati_no, malzeme_pati_no))
         row = cursor.fetchone()
         agirlik = row[0]
         birim = row[1]
+        print(agirlik)
+        print(birim)
         result = (deger, agirlik, birim)
     else:
         result = (deger, None, None)    
