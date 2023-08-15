@@ -21,7 +21,6 @@ def show_index():
 
 @app.route('/')
 def index():
-    
     return render_template('login_page.html')
 
 @app.route('/upload', methods=['POST'])
@@ -89,13 +88,13 @@ def confirm_data():
     result = request.form['result']
 
     if confirm_choice == 'yes':
-         return redirect('/')
+         return redirect('/index')
     elif confirm_choice == 'no':
-        return redirect('/')
+        return redirect('/index')
     elif confirm_choice == 'manual':
         return render_template('manual.html', urun_parti_no=urun_parti_no, malzeme_parti_no=malzeme_parti_no, Net=Net, result=result)
     else:
-        return redirect('/')
+        return redirect('/index')
 
 
 @app.route('/manual_edit', methods=['POST'])
@@ -138,4 +137,3 @@ def check_user_permission():
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
 
-##SEEEEEEEEEEEEEEE

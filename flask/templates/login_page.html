@@ -33,10 +33,14 @@
                             console.log(data)
                             if (decodedToken.sub === username && permission_response === "Authorized") {
                                 console.log("Giriş başarılı.");
+                                var expirationDate = new Date();
+                                expirationDate.setMinutes(expirationDate.getMinutes() + 1); 
+                                var expires = expirationDate.toUTCString();
+                                document.cookie = "ana_yetki=true; Secure; expires=" + expires;
                                 window.location.href = "/index"; 
                             } else {
                                 console.log("Yetkilendirme başarısız veya kullanıcı adı eşleşmedi. Giriş başarısız.");
-                                alert("Kullanıcı adı veya şifre hatalı veya yetkilendirme başarısız.");
+                                alert("Yetkilendirme başarısız.");
                             }
                         },
                         error: function (error) {
