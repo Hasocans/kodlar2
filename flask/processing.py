@@ -103,10 +103,11 @@ def process_image(image_path2):
         cleaned_Sonuclar.append(cleaned_sonuc)
     #Son defa boşlukları düzenle
     cleaned_Sonuclar2 = [' '.join(degisken.split()) for degisken in cleaned_Sonuclar]
-
+    print(cleaned_Sonuclar2)
+    print(type(cleaned_Sonuclar2))
     tek_nokta_liste = []
 
-    try:
+    try:#kg burda buluyor
         for nokta in cleaned_Sonuclar2:
             if nokta.count(".") == 1:
                 tek_nokta_liste.append(nokta)
@@ -120,13 +121,15 @@ def process_image(image_path2):
         numbers = re.findall(r'\d+', string_value)  # Sayıları bul
         numbers = [int(num) for num in numbers]  # Sayıları integer'a dönüştür
         integer_dizi.extend(numbers)  # Integerları integer_dizi'ye ekle
+       
 
     sekiz_basamak = [num for num in integer_dizi if len(str(num)) == 8]
+    tersten_liste = sekiz_basamak[::-1]
 
-    duzgun_liste=[]
-    for i in range(len(sekiz_basamak) // 2):
-        urun_parti_no = sekiz_basamak[i * 2]
-        malzeme_parti_no = sekiz_basamak[i * 2 + 1]
+    duzgun_liste=[]#listenin ilk iki 8 hanelisin alıyor
+    for i in range(len(tersten_liste) // 2):
+        malzeme_parti_no = tersten_liste[i * 2]
+        urun_parti_no = tersten_liste[i * 2 + 1]
         duzgun_liste.append(urun_parti_no)
         duzgun_liste.append(malzeme_parti_no)
    

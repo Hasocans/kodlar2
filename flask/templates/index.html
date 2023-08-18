@@ -6,10 +6,11 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         var ana_yetki = getCookie('ana_yetki');
+        var ana_yetki = 'true';
         if (ana_yetki === 'true') {
             console.log("Kullanıcı ana yetkiye sahip.")
         } else {
-            
+
             console.log("Kullanıcı ana yetkiye sahip değil.");
             window.location.href = "/";
         }
@@ -21,39 +22,41 @@
         if (parts.length === 2) return parts.pop().split(";").shift();
     }
 </script>
-    <div class="container">
-        <div class="row d-flex justify-content-center mt-5">
-            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-                <div class="card py-3 px-2">
-                    <p class="text-center mb-3 mt-2">GÖRSEL SEÇ</p>
-                    <form class="myform" action="/upload" method="POST" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <label for="fileInput" class="btn btn-danger btn-block btn-lg">
-                                <i class="far fa-file-image pr-2"></i>Seç
-                            </label>
-                            <input type="file" id="fileInput" class="form-control" name="file" accept=".png, .jpg, .jpeg, .gif" style="display: none;" required>
-                        </div>
-                        <div id="selectedImageInfo" class="mt-3" style="display: none;">
-                            <button class="btn btn-success btn-block btn-lg" disabled>Fotoğraf Seçildi</button>
-                        </div>
-                        <script>
-                            document.getElementById("fileInput").addEventListener("change", function(event) {
-                                var fileName = event.target.files[0].name;
-                                var selectedImageInfo = document.getElementById("selectedImageInfo");
-                                selectedImageInfo.style.display = "block";
-                                selectedImageInfo.querySelector("button").innerText = fileName;
-                            });
-                        </script>
-                        <div class="form-group mt-3">
-                            <button type="submit" class="btn btn-primary btn-block btn-lg">
-                                <medium><i class="far fa-file-image pr-2"></i>Gönder</medium>
-                            </button>
-                        </div>
-                    </form>
-                </div>
+
+<div class="container">
+    <div class="row d-flex justify-content-center mt-5">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+            <div class="card py-3 px-2">
+                <p class="text-center mb-3 mt-2">GÖRSEL SEÇ</p>
+                <form class="myform" action="/upload" method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="fileInput" class="btn btn-danger btn-block btn-lg">
+                            <i class="far fa-file-image pr-2"></i>Seç
+                        </label>
+                        <input type="file" id="fileInput" class="form-control" name="file"
+                            accept=".png, .jpg, .jpeg, .gif" style="display: none;" required>
+                    </div>
+                    <div id="selectedImageInfo" class="mt-3" style="display: none;">
+                        <button class="btn btn-success btn-block btn-lg" disabled>Fotoğraf Seçildi</button>
+                    </div>
+                    <script>
+                        document.getElementById("fileInput").addEventListener("change", function (event) {
+                            var fileName = event.target.files[0].name;
+                            var selectedImageInfo = document.getElementById("selectedImageInfo");
+                            selectedImageInfo.style.display = "block";
+                            selectedImageInfo.querySelector("button").innerText = fileName;
+                        });
+                    </script>
+                    <div class="form-group mt-3">
+                        <button type="submit" class="btn btn-primary btn-block btn-lg">
+                            <medium><i class="far fa-file-image pr-2"></i>Gönder</medium>
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+</div>
 
-    
+
 {% endblock content %}

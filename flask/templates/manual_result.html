@@ -1,11 +1,12 @@
 {% extends "temel.html" %}
 
-{%block title%} {%endblock title%}
+{% block title %}Veri Doğrulama{% endblock title %}
 
-{%block content%}
+{% block content %}
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         var ana_yetki = getCookie('ana_yetki');
+        var ana_yetki = 'true'
         if (ana_yetki === 'true') {
             console.log("Kullanıcı ana yetkiye sahip.")
         } else {
@@ -20,34 +21,50 @@
         if (parts.length === 2) return parts.pop().split(";").shift();
     }
 </script>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Manuel Sonuç</title>
-</head>
-<body>
+
     <div class="container mt-5">
-        <header class=" text-black text-center py-3">
-            <h1 class="font-weight-bold">Manuel Sonuç</h1>
-        </header>
+        <h1 class="text-center mb-4">Veri Doğrulama</h1>
 
-        <div class="card p-4">
-            <p><strong>Urun Parti No:</strong> {{ urun_parti_no }}</p>
-            <p><strong>Malzeme Parti No:</strong> {{ malzeme_parti_no }}</p>
-
-            <p><strong>Net:</strong> {{ Net }}</p>
-            {% if new_result %}
-                <p><strong>Durum:</strong> VAR</p>
-            {% else %}
-                <p><strong>Durum:</strong> YOK</p>
-            {% endif %}
-            <p><strong>Ağirlik:</strong> {{ message }}</p>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card p-4">
+                    <h2 class="text-center mb-4">Okunan Veri</h2>
+                    <p><strong>Ürün Parti No:</strong> {{ urun_parti_no }}</p>
+                    <p><strong>Malzeme Parti No:</strong> {{ malzeme_parti_no }}</p>
+                    <p><strong>Net:</strong> {{ yeni_net_img_degerler_agirlik }}</p>
+                    <p><strong>Durum:</strong> <span class="badge bg-danger text-white p-2 fs-5">YOK</span></p>
+                    
+                    
+                    
+                    <div class="text-center btn-group">
+                        <form action="/ekle" method="POST" class="mr-2">
+                            <button type="submit" name="confirm" value="yes" class="btn btn-outline-success">Onay</button>
+                        </form>    
+                        
+                        <form action="/confirm" method="POST" class="mr-2">
+                            <input type="hidden" name="urun_parti_no" value="{{ urun_parti_no }}">
+                            <input type="hidden" name="malzeme_parti_no" value="{{ malzeme_parti_no }}">
+                            <input type="hidden" name="Net" value="{{ yeni_net_img_degerler_agirlik }}">
+                            <input type="hidden" name="result" value="{{ result }}">
+                            <button type="submit" name="confirm" value="no" class="btn btn-outline-danger">Tekrar Çek</button>
+                        </form>
+                        
+                        <form action="/confirm" method="POST" class="mr-2">
+                            <input type="hidden" name="urun_parti_no" value="{{ urun_parti_no }}">
+                            <input type="hidden" name="malzeme_parti_no" value="{{ malzeme_parti_no }}">
+                            <input type="hidden" name="Net" value="{{ yeni_net_img_degerler_agirlik }}">
+                            <input type="hidden" name="result" value="{{ result }}">
+                            <button type="submit" name="confirm" value="manual" class="btn btn-outline-primary">Manuel</button>
+                        </form>
+                        
+                        
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
         </div>
 
-        <div class="text-center mt-4">
-            <a href="/" class="btn btn-primary">Ana Sayfa</a>
-        </div>
+      
     </div>
-</body>
-</html>
-{%endblock content%}
+{% endblock content %}

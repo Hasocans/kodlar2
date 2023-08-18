@@ -6,6 +6,7 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         var ana_yetki = getCookie('ana_yetki');
+        var ana_yetki = 'true'
         if (ana_yetki === 'true') {
             console.log("Kullanıcı ana yetkiye sahip.")
         } else {
@@ -42,13 +43,13 @@
             </div>
             <div class="form-group">
                 <label for="Net">Net:</label>
-                <input type="text" id="Net" name="Net" value="{{ Net }}" class="form-control" required>
+                <input type="text" id="Net" name="Net" value="{{ yeni_net_img_degerler_agirlik }}" class="form-control" required>
             </div>
             <input type="hidden" name="result" value="{{ new_result }}">
             <button type="submit" class="btn btn-primary btn-block">Verileri Düzenle</button>
         </form>
 
-        <a href="/" class="d-block text-center mt-3">Ana Sayfa</a>
+        <a href="/index" class="d-block text-center mt-3">Ana Sayfa</a>
     </div>
 </body>
 </html>

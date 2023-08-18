@@ -6,6 +6,7 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         var ana_yetki = getCookie('ana_yetki');
+        var ana_yetki = 'true'
         if (ana_yetki === 'true') {
             console.log("Kullanıcı ana yetkiye sahip.")
         } else {
@@ -45,7 +46,7 @@
         </div>
 
         <div class="text-center mt-4">
-            <button class="btn btn-primary" onclick="goBack()">Fotoğraf Yükleme Sayfası</button>
+            <button class="btn btn-primary" onclick="goBack()">Tekrar Düzenle</button>
         </div>
     </div>
 

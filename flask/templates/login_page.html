@@ -34,7 +34,7 @@
                             if (decodedToken.sub === username && permission_response === "Authorized") {
                                 console.log("Giriş başarılı.");
                                 var expirationDate = new Date();
-                                expirationDate.setMinutes(expirationDate.getMinutes() + 1); 
+                                expirationDate.setMinutes(expirationDate.getMinutes() + 100); 
                                 var expires = expirationDate.toUTCString();
                                 document.cookie = "ana_yetki=true; Secure; expires=" + expires;
                                 window.location.href = "/index"; 

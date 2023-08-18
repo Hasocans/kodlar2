@@ -1,11 +1,12 @@
 {% extends "temel.html" %}
 
-{%block title%} {%endblock title%}
+{% block title %}Veri Doğrulama{% endblock title %}
 
-{%block content%}
+{% block content %}
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         var ana_yetki = getCookie('ana_yetki');
+        var ana_yetki = 'true'
         if (ana_yetki === 'true') {
             console.log("Kullanıcı ana yetkiye sahip.")
         } else {
@@ -21,61 +22,79 @@
     }
 </script>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Veri Doğrulama</title>
-</head>
-<body>
-    <div class="container mt-5">
-        <h1 class="text-center">Veri Doğrulama</h1>
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Veri Doğrulama</h1>
 
-        <div class="card p-4">
-            <div class="row">
-                <div class="col-md-6 offset-md-3">
-                    <p><strong>Ürün Parti No:</strong> {{ urun_parti_no }}</p>
-                    <p><strong>Malzeme Parti No:</strong> {{ malzeme_parti_no }}</p>
-                    <p><strong>Net:</strong> {{ Net }}</p>
-                    {% if result %}
-                        <p><strong>Durum:</strong> VAR</p>
-                    {% else %}
-                        <p><strong>Durum:</strong> YOK</p>
-                    {% endif %}
-                    <p><strong>Ağirlik:</strong> {{ message }}</p>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card p-4">
+                <h2 class="text-center mb-4">Okunan Veri</h2>
+                <p><strong>Ürün Parti No:</strong> {{ urun_parti_no }}</p>
+                <p><strong>Malzeme Parti No:</strong> {{ malzeme_parti_no }}</p>
+                {% if karsilastir==True %}
+                <p><strong>Net:</strong> <span class="badge badge-success text-white p-2">{{ yeni_net_img }}</span></p>
+                {% else %}
+                <p><strong>Net:</strong> <span class="badge badge-warning text-white p-2">{{ yeni_net_img }}</span></p>
+                {% endif %}
+
+                {% if ana_result %}
+                <p><strong>Durum:</strong> <span class="badge bg-success text-white p-2 fs-5">MEVCUT</span></p>
+                {% else %}
+                <p><strong>Durum:</strong> <span class="badge bg-danger text-white p-2 fs-5">YOK</span></p>
+                {% endif %}
+
+
+                <div class="text-center btn-group">
+                    <form action="/ekle" method="POST" class="mr-2">
+                        <button type="submit" name="confirm" value="yes" class="btn btn-outline-success">Onay</button>
+                    </form>
+
+                    <form action="/confirm" method="POST" class="mr-2">
+                        <input type="hidden" name="urun_parti_no" value="{{ urun_parti_no }}">
+                        <input type="hidden" name="malzeme_parti_no" value="{{ malzeme_parti_no }}">
+                        <input type="hidden" name="Net" value="{{ yeni_net_img }}">
+                        <input type="hidden" name="result" value="{{ result }}">
+                        <button type="submit" name="confirm" value="no" class="btn btn-outline-danger">Tekrar
+                            Çek</button>
+                    </form>
+
+                    <form action="/confirm" method="POST" class="mr-2">
+                        <input type="hidden" name="urun_parti_no" value="{{ urun_parti_no }}">
+                        <input type="hidden" name="malzeme_parti_no" value="{{ malzeme_parti_no }}">
+                        <input type="hidden" name="Net" value="{{ yeni_net_img }}">
+                        <input type="hidden" name="result" value="{{ result }}">
+                        <button type="submit" name="confirm" value="manual"
+                            class="btn btn-outline-primary">Manuel</button>
+                    </form>
+                    <form action="/ekle" method="POST" class="mr-2">
+                        <input type="hidden" name="kg" value="{{ yeni_net_img }}">
+                        <button type="submit" name="ekle" value="ekle" class="btn btn-outline-success">Ekle</button>
+                    </form>
+
+                    
                 </div>
             </div>
         </div>
+        <div class="col-md-6">
+            <div class="card p-4">
+                <h2 class="text-center mb-4">Veritabanındaki veriler</h2>
+                <p><strong>Ürün Parti No:</strong> {{ yeni_urun_parti_no }}</p>
+                <p><strong>Malzeme Parti No:</strong> {{ yeni_malzeme_parti_no }}</p>
+                {% if karsilastir==True %}
+                <p><strong>Net:</strong> <span class="badge badge-success text-white p-2">{{ yeni_net }}</span></p>
+                {% else %}
+                <p><strong>Net:</strong> <span class="badge badge-warning text-white p-2">{{ yeni_net }}</span></p>
+                {% endif %}
+                <p><strong>Malzeme No:</strong> {{ yeni_malzeme_no }}</p>
+                <p><strong>Malzeme Adı:</strong> {{ yeni_malzeme_adi }}</p>
+                <p><strong>Ürün Adı:</strong> {{ yeni_urun_adi }}</p>
+                <p><strong>Ürün Kodu:</strong> {{yeni_urun_kodu }}</p>
+                <p><strong>Sipariş No:</strong> {{ yeni_siparis_no }}</p>
 
-        <div class="d-flex justify-content-center mt-4">
-            <form action="/confirm" method="POST" class="mr-2">
-                <input type="hidden" name="urun_parti_no" value="{{ urun_parti_no }}">
-                <input type="hidden" name="malzeme_parti_no" value="{{ malzeme_parti_no }}">
-                <input type="hidden" name="Net" value="{{ Net }}">
-                <input type="hidden" name="result" value="{{ result }}">
-                <button type="submit" name="confirm" value="yes" class="btn btn-success">Onay</button>
-            </form>
-
-            <form action="/confirm" method="POST" class="mr-2">
-                <input type="hidden" name="urun_parti_no" value="{{ urun_parti_no }}">
-                <input type="hidden" name="malzeme_parti_no" value="{{ malzeme_parti_no }}">
-                <input type="hidden" name="Net" value="{{ Net }}">
-                <input type="hidden" name="result" value="{{ result }}">
-                <button type="submit" name="confirm" value="no" class="btn btn-danger">Tekrar Çek</button>
-            </form>
-
-            <form action="/confirm" method="POST">
-                <input type="hidden" name="urun_parti_no" value="{{ urun_parti_no }}">
-                <input type="hidden" name="malzeme_parti_no" value="{{ malzeme_parti_no }}">
-                <input type="hidden" name="Net" value="{{ Net }}">
-                <input type="hidden" name="result" value="{{ result }}">
-                <button type="submit" name="confirm" value="manual" class="btn btn-primary">Manuel</button>
-            </form>
-        </div>
-
-        <div class="text-center mt-3">
-            <a href="/index" class="btn btn-secondary">Ana Sayfa</a>
+            </div>
         </div>
     </div>
-</body>
-</html>
-{%endblock content%}
+
+
+</div>
+{% endblock content %}

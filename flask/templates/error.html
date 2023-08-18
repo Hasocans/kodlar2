@@ -6,6 +6,7 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         var ana_yetki = getCookie('ana_yetki');
+        var ana_yetki = 'true'
         if (ana_yetki === 'true') {
             console.log("Kullanıcı ana yetkiye sahip.")
         } else {
@@ -44,7 +45,7 @@
         </div>
 
         <div class="text-center">
-            <a href="/" class="btn btn-primary">Fotoğraf Yükleme Sayfası</a>
+            <a href="/index" class="btn btn-primary">Fotoğraf Yükleme Sayfası</a>
         </div>
     </div>
 </body>

@@ -3,14 +3,14 @@ from processing import process_image
 import pyodbc
 import string
 
-#msqlde etiket değerleri kontrol ediliyor
+
 def check_data_in_table(urun_pati_no, malzeme_pati_no):
     db = pypyodbc.connect(
         'Driver={SQL Server};'
-        'Server=192.168.101.120;'  # Server IP adresi
-        'Database=BIOCORE_TEST;'  # Hedef database ismi
-        'UID=SOFTWARE_TEST;'  # Kullanıcı adı, gerekirse düzenleyin
-        'PWD=Bftst3442*;'  # Şifre, gerekirse düzenleyin
+        'Server=192.168.101.120;' 
+        'Database=BIOCORE_TEST;'  
+        'UID=SOFTWARE_TEST;'  
+        'PWD=Bftst3442*;'  
     )
 
     cursor = db.cursor()
@@ -30,20 +30,19 @@ def check_data_in_table(urun_pati_no, malzeme_pati_no):
     cursor.execute(query, (urun_pati_no, malzeme_pati_no))
     deger = cursor.fetchall()
     if deger:
-        query_select = """
-    SELECT TOP (1) [NetWeight], [Unit]
-    FROM [dbo].[VW_ProductProcess]
-    WHERE BatchNo=? AND MaterialBatchNo=?
-    """
+        print("giriş2")
+        query_select = query_select = """
+SELECT TOP (1) [BatchNo],[MaterialBatchNo],[NetWeight],[Unit],[MaterialNo],[MaterialName],[ProductName],[ProductCode],[OrderNo]
+FROM [dbo].[VW_ProductProcess]
+WHERE BatchNo=? AND MaterialBatchNo=?
+"""
         cursor.execute(query_select, (urun_pati_no, malzeme_pati_no))
         row = cursor.fetchone()
-        agirlik = row[0]
-        birim = row[1]
-        print(agirlik)
-        print(birim)
-        result = (deger, agirlik, birim)
+        print("a")
+        result = (deger,row)
     else:
-        result = (deger, None, None)    
+        print("b")
+        result = (deger,None)    
     
     cursor.close()
     db.close()
@@ -53,13 +52,15 @@ def check_data_in_table(urun_pati_no, malzeme_pati_no):
 def yetki(username):
     db = pypyodbc.connect(
         'Driver={SQL Server};'
-        'Server=BFPC1246\SQLEXPRESS;'
-        'Database=Yetkiler;'  # database ismi
-        'Trusted_Connection=True;'
+        'Server=192.168.101.120;'  
+        'Database=BIOCORE_TEST;'  
+        'UID=SOFTWARE_TEST;'  
+        'PWD=Bftst3442*;' 
     )
 
+
     cursor = db.cursor()
-    query = "SELECT * FROM Yetki WHERE username = ?"  # table, sütun1, sütun2
+    query = "SELECT * FROM [dbo].[Authorization] WHERE ApplicationName = 'Tartim' AND AccountName=?"
     cursor.execute(query, (username,))
     result = cursor.fetchall()
     cursor.close()
@@ -94,47 +95,30 @@ def net_parcalama(net):
         i -= 1
 
     yeni_agirlik = net[:i+1]
-    
+   
     return yeni_agirlik, Birim    
 
-"""def update_agirlik(urun_pati_no, malzeme_pati_no,agirlik):
-    connection_string = (
-        'Driver={SQL Server};'
-        'Server=BFPC1246\SQLEXPRESS;'
-        'Database=ogrenci_bilgileri;'  
-        'Trusted_Connection=True;'
-    )
-    for noktalama_isaretleri in string.punctuation:
-        if noktalama_isaretleri != ".":
-            agirlik = agirlik.replace(noktalama_isaretleri, ".")#Değişkende nokta hariç başka bir noktalama işareti varsa onları nokta yapıyor
+def sıfır_silme(sıfırlı_deger):
+    non_zero_index = next((i for i, c in enumerate(sıfırlı_deger) if c != '0'), None)
+    if non_zero_index is not None:
+        return sıfırlı_deger[non_zero_index:]
+    return sıfırlı_deger    
 
-    i = len(agirlik) - 1
-    while i >= 0 and not agirlik[i].isdigit():
-        i -= 1
+def agirlik_sifir_silme(deger):
+    deger_str = str(deger)
+    
+    if '.' in deger_str:
+        deger_str = deger_str.rstrip('0').rstrip('.') 
+        if deger_str[-1] == '.':
+            deger_str = deger_str[:-1]
+    print("sıfır_silme: "+deger_str)        
+    return deger_str
 
-    yeni_agirlik = agirlik[:i+1]
-    print(yeni_agirlik)
-
-    connection = pyodbc.connect(connection_string)
-    cursor = connection.cursor()
-
-    query = "UPDATE PartiNo SET agirlik = ? WHERE UrunPatiNo = ? AND MalzemePartiNo = ?"
-    cursor.execute(query, (yeni_agirlik, urun_pati_no, malzeme_pati_no))
-
-    if "k" in agirlik or "K" in agirlik:
-        query = "UPDATE PartiNo SET Birim = ? WHERE UrunPatiNo = ? AND MalzemePartiNo = ?"
-        cursor.execute(query, ("KG", urun_pati_no, malzeme_pati_no))
-    elif "r" in agirlik or "R" in agirlik:
-        query = "UPDATE PartiNo SET Birim = ? WHERE UrunPatiNo = ? AND MalzemePartiNo = ?"
-        cursor.execute(query, ("GR", urun_pati_no, malzeme_pati_no))
-    else:
-        query = "UPDATE PartiNo SET Birim = ? WHERE UrunPatiNo = ? AND MalzemePartiNo = ?"
-        cursor.execute(query, ("NONE", urun_pati_no, malzeme_pati_no))
-    connection.commit()
-    cursor.close()
-    connection.close()
-    return"""
-   
-
-
-
+def kg_duzenleme(value):
+    try:
+        cleaned_value = value.replace(" KG", "")
+        float_value = float(cleaned_value)
+        return float_value
+    except ValueError:
+        return None   
+    
